@@ -1,0 +1,32 @@
+{
+	"name":"erdiko/authorize",
+    "description": "Authorize features",
+    "keywords": ["authorize", "erdiko", "erdiko-authorize"],
+    "homepage": "http://erdiko.org",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Arroyo Labs",
+            "email": "info@arroyolabs.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Erdiko/authenticate"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "ac/kalinka": "dev-master",
+        "erdiko/authenticate": "@dev"
+    },
+    "config": {
+        "minimum-stability": "dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "erdiko\\authorize\\": "src/"
+        }
+    }
+}
