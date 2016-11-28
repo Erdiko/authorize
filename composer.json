@@ -10,12 +10,6 @@
             "email": "info@arroyolabs.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/Erdiko/authenticate"
-        }
-    ],
     "require": {
         "php": ">=5.4.0",
         "ac/kalinka": "dev-master"
