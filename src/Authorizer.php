@@ -1,9 +1,6 @@
 <?php
-
-
 /**
  * Authorizer
- *
  *
  * @category    Erdiko
  * @package     Authorize
@@ -30,7 +27,7 @@ class Authorizer extends RoleAuthorizer
 			$roleNames = $user->getRoles();
 			parent::__construct($user, $roleNames);
 
-			$config = \Erdiko::getConfig("application/auth");
+			$config = \erdiko\core\Helper::getConfig(getenv('ERDIKO_CONTEXT')."/auth");
 
 			$guards = $config["guards"];
 			$policies = $config["policies"];
