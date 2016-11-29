@@ -34,9 +34,16 @@ class Authorizer extends RoleAuthorizer
 
 			$register = array();
 			foreach ($guards as $guard) {
-				$class = 'erdiko\\authorize\\models\\guards' . ucfirst(strtolower($guard));
-				$register[$guard] = new $class;
-				\error_log(print_r($register));
+				// attempt to use app guard
+				$class = 'app\\models\\guards\\' . ucfirst(strtolower($guard));
+				if(class_exists($class)){
+					$register[$guard] = new $class;
+				} else{
+					$class = 'erdiko\\authorize\\models\\guards\\' . ucfirst(strtolower($guard));
+					if(class_exists($class)){
+						$register[$guard] = new $class;
+					}
+				}
 			}
 
 			$this->registerGuards($register);
