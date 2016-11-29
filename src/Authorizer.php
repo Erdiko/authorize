@@ -34,8 +34,9 @@ class Authorizer extends RoleAuthorizer
 
 			$register = array();
 			foreach ($guards as $guard) {
-				$class = '\\models\\guards\\' . ucfirst(strtolower($guard));
+				$class = 'erdiko\\authorize\\models\\guards' . ucfirst(strtolower($guard));
 				$register[$guard] = new $class;
+				\error_log(print_r($register));
 			}
 
 			$this->registerGuards($register);
