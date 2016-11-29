@@ -2,7 +2,7 @@
 
 
 /**
- * Dashboard
+ * Index
  *
  * @category    Erdiko
  * @package     Authorize
@@ -11,15 +11,15 @@
  */
 
 
-namespace erdiko\authorize\app\models\guards;
+namespace erdiko\authorize\models\guards;
 
 
 use AC\Kalinka\Guard\BaseGuard;
 
-class Dashboard extends BaseGuard
+class Index extends BaseGuard
 {
   public function getActions()
   {
-    return ["read"];
+    return ["read","login","logout"];
   }
 }
