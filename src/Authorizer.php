@@ -27,7 +27,7 @@ class Authorizer extends RoleAuthorizer
 			$roleNames = $user->getRoles();
 			parent::__construct($user, $roleNames);
 
-			$config = \erdiko\core\Helper::getConfig(getenv('ERDIKO_CONTEXT')."/auth");
+			$config = \erdiko\core\Helper::getConfig(getenv('ERDIKO_CONTEXT')."/authorize");
 
 			$guards = $config["guards"];
 			$policies = $config["policies"];
