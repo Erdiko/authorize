@@ -3,13 +3,12 @@
  *
  * @todo add tests for the different template types
  */
-namespace erdiko\authorize\tests;
-
+namespace tests\phpunit;
 
 use erdiko\authorize\Authorizer;
 
-require_once dirname(__FILE__) . '/ErdikoTestCase.php';
-require_once dirname(__FILE__) . '/MyErdikoUser.php';
+require_once dirname(__DIR__) . '/ErdikoTestCase.php';
+require_once 'MyErdikoUser.php';
 
 
 class AuthorizerTest extends \tests\ErdikoTestCase

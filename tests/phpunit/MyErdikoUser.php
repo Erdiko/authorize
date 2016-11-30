@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  * MyErdikoUser
  *
@@ -10,8 +8,7 @@
  * @author      Leo Daidone, leo@arroyolabs.com
  */
 
-
-namespace erdiko\authorize\tests;
+namespace tests\phpunit;
 
 use erdiko\authenticate\iErdikoUser;
 
