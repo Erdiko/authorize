@@ -12,13 +12,13 @@
 namespace erdiko\authorize;
 
 use \AC\Kalinka\Authorizer\RoleAuthorizer;
-use erdiko\authenticate\iErdikoUser;
+use erdiko\authorize\UserInterface;
 
 class Authorizer extends RoleAuthorizer
 {
 	private $isGuest = true;
 
-	public function __construct(iErdikoUser $user)
+	public function __construct(UserInterface $user)
 	{
 		$this->isGuest = ($user->isAnonymous());
 
