@@ -2,9 +2,8 @@
 /**
  * Authorizer
  *
- * @category    Erdiko
- * @package     Authorize
- * @copyright   Copyright (c) 2016, Arroyo Labs, http://www.arroyolabs.com
+ * @package     erdiko/authorize
+ * @copyright   Copyright (c) 2017, Arroyo Labs, http://www.arroyolabs.com
  * @author      Leo Daidone, leo@arroyolabs.com
  */
 
