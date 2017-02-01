@@ -10,9 +10,9 @@
 
 namespace tests\phpunit;
 
-use erdiko\authenticate\iErdikoUser;
+use \erdiko\authorize\UserInterface;
 
-class MyErdikoUser implements iErdikoUser
+class MyErdikoUser implements UserInterface
 {
 	private $user_id;
 	private $roles = array('anonymous');

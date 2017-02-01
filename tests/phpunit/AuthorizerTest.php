@@ -8,7 +8,7 @@ namespace tests\phpunit;
 use erdiko\authorize\Authorizer;
 
 require_once dirname(__DIR__) . '/ErdikoTestCase.php';
-require_once 'MyErdikoUser.php';
+require_once dirname(__DIR__) . '/MyErdikoUser.php';
 
 
 class AuthorizerTest extends \tests\ErdikoTestCase
