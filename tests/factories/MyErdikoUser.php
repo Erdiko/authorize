@@ -8,7 +8,7 @@
  * @author      Leo Daidone, leo@arroyolabs.com
  */
 
-namespace tests\phpunit;
+namespace erdiko\authorize\tests\factories;
 
 use \erdiko\authorize\UserInterface;
 
