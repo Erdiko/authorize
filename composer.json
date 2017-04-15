@@ -12,7 +12,8 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "ac/kalinka": "dev-master"
+        "pimple/pimple": "~3.0",
+        "symfony/security": "^3.2"
     },
     "config": {
         "minimum-stability": "dev"
