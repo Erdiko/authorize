@@ -9,9 +9,10 @@
 
 namespace erdiko\authorize;
 
-use erdiko\authenticate\traits\SessionAccessTrait;
+use erdiko\authorize\traits\SessionAccessTrait;
 use erdiko\authorize\voters\AdminDashboardVoter;
 use erdiko\authorize\voters\CustomizeVoter;
+use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -28,7 +29,7 @@ class Authorizer
     private $checker;
     private $tokenStorage;
 
-    public function __construct($authenticationManager, $voters=array())
+    public function __construct(AuthenticationManagerInterface $authenticationManager, $voters=array())
     {
         self::startSession();
 

@@ -7,7 +7,7 @@
  * @author      Leo Daidone, leo@arroyolabs.com
  */
 
-namespace erdiko\authenticate\traits;
+namespace erdiko\authorize\traits;
 
 
 trait SessionAccessTrait
@@ -16,13 +16,13 @@ trait SessionAccessTrait
     {
         if (version_compare(phpversion(), '5.4.0', '<')) {
             if(session_id() == '') {
-                session_start();
+                @session_start();
             }
         }
         else
         {
             if (session_status() == PHP_SESSION_NONE) {
-                session_start();
+                @session_start();
             }
         }
     }

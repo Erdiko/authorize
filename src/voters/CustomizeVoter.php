@@ -9,7 +9,7 @@
 
 namespace erdiko\authorize\voters;
 
-use erdiko\authenticate\traits\BuilderTrait;
+use erdiko\authorize\traits\BuilderTrait;
 use erdiko\authorize\traits\ConfigLoaderTrait;
 use erdiko\authorize\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -20,7 +20,7 @@ class CustomizeVoter implements VoterInterface
     use ConfigLoaderTrait;
     use BuilderTrait;
 
-    private $_attributtes = array();
+    public $_attributtes = array();
     private $container;
 
     public function __construct()
@@ -35,7 +35,7 @@ class CustomizeVoter implements VoterInterface
     {
         foreach ($this->_attributtes as $validator=>$attributes) {
             if (in_array($attribute, $attributes)) {
-                return $validator;
+                return $this->container['VALIDATORS'][$validator];
                 break;
             }
         }

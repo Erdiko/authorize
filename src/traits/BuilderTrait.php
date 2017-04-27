@@ -7,7 +7,7 @@
  * @author      Leo Daidone, leo@arroyolabs.com
  */
 
-namespace erdiko\authenticate\traits;
+namespace erdiko\authorize\traits;
 
 
 trait BuilderTrait
@@ -16,6 +16,7 @@ trait BuilderTrait
 	public function buildValidators($storage = array())
 	{
 		$_container = new \Pimple\Container();
+		$storage = empty($storage) ? array() : $storage;
 		foreach ($storage as $item){
 			if($item["enabled"]==1){
 				$class = '\\'

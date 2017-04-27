@@ -1,50 +1,51 @@
 <?php
 /**
+ * Authorize
  *
- * @todo add tests for the different template types
+ * @category    Erdiko
+ * @package     Authenticate/Services
+ * @copyright   Copyright (c) 2017, Arroyo Labs, http://www.arroyolabs.com
+ * @author      Leo Daidone, leo@arroyolabs.com
  */
+
 namespace tests\phpunit;
 
 require_once dirname(__DIR__) . '/ErdikoTestCase.php';
+require_once dirname(__DIR__) . '/factories/AuthenticationManager.php';
 require_once dirname(__DIR__) . '/factories/MyErdikoUser.php';
 
-
 use erdiko\authorize\Authorizer;
-use erdiko\authorize\tests\factories\MyErdikoUser;
+use erdiko\authorize\tests\factories\AuthenticationManager;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use \tests\ErdikoTestCase;
 
 
 
 class AuthorizerTest extends ErdikoTestCase
 {
-	public $user;
+	public $user_a;
+	public $user_b;
 	public $auth;
+	public $authManager;
+
 
 	public function setUp()
 	{
-		$this->user = MyErdikoUser::getAnonymous();
-		$this->auth = new Authorizer($this->user);
+	    $this->authManager = new AuthenticationManager();
+	    $this->auth = new Authorizer($this->authManager, array());
+        $this->user_a = new UsernamePasswordToken('bar@mail.com', 'asdf1234', 'main', array());
+        $this->user_b = new UsernamePasswordToken('foo@mail.com', 'asdf1234', 'main', array());
 	}
 
-	public function tearDown()
-	{
-		unset($this->auth);
-		unset($this->user);
-	}
+    public function testCanGranted()
+    {
+        $this->authManager->authenticate($this->user_a);
+        $this->assertTrue($this->auth->can('VIEW_ADMIN_DASHBOARD'));
+    }
 
-	public function testCan()
+    public function testCanRejected()
 	{
-		$this->assertTrue($this->auth->can('read','index'));
-		$this->assertFalse($this->auth->can('write','login'));
-		$this->assertTrue($this->auth->can('read','logout'));
-		$this->assertFalse($this->auth->can('read','plans'));
-	}
-
-	public function testCannot()
-	{
-		$this->assertFalse($this->auth->cannot('read','index'));
-		$this->assertTrue($this->auth->cannot('write','login'));
-		$this->assertFalse($this->auth->cannot('read','logout'));
-		$this->assertTrue($this->auth->cannot('read','plans'));
+        $this->authManager->authenticate($this->user_b);
+        $this->assertFalse($this->auth->can('VIEW_ADMIN_DASHBOARD'));
 	}
 }

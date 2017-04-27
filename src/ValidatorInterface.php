@@ -26,4 +26,6 @@ interface ValidatorInterface
      * @return bool
      */
     public function supportsAttribute($attribute);
+
+    public function validate($token);
 }
