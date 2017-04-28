@@ -1,20 +1,19 @@
-# Authorize
+# Erdiko Authorize
 
 [![Package version](https://img.shields.io/packagist/v/erdiko/authorize.svg?style=flat-square)](https://packagist.org/packages/erdiko/authorize)
 
-**User Authorization**
+**Authorize**
 
-A package to handle user authentication.
+An Erdiko package to provide user authorization.
 
 Compatibility
 -------------
-This is compatible with PHP 5.4 or above and the latest version of Erdiko.
+This package is compatible with PHP 5.4 or above and the latest version of Erdiko.
 
 Requirements
 ------------
-This package requires Pimple version 3.0 or above, and Symfony-security package version 3.2 or above.
-In case any of those dependencies are not installed automatically when you run composer update in your project folder 
-please add to the project by
+This package requires Pimple version 3.0 or above and Symfony-security package version 3.2 or above.
+To ensure all dependencies are installed when you run composer update in your project folder run the following commands:
 
 `composer require pimple/pimple`
 
@@ -22,17 +21,17 @@ please add to the project by
 
 Installation
 ------------
-Add package using composer
+Add the eridko/authorize package using composer with this command:
 
 `composer require erdiko/authorize`
 
 How to Use
 ----------
 
-Once you have installed, the package is ready to start. It bring a basic Role based Admin validation out of the box. 
+Once you have installed the package you are ready to start. Basic Role based Admin validation works out of the box! 
 
-To start using it just creating an instance of `Authorizer` class, that will only expect an instance of 
-`AuthenticationManagerInterface` from symfony/security package.
+To start using it in your code just create an instance of `Authorizer` class. This class will expect an instance of 
+`AuthenticationManagerInterface` from symfony/security package as a constructor parameter.
 
 Here's an example:
  ```php
@@ -91,7 +90,7 @@ Here's an example:
  }
  ```
 
-In controllers, a best practice is add this creation in `_before` hook. It will looks like this:
+It’s a best practice to add instance creation in the `_before` hook. An example of this best practice looks like this:
  
  ```php
  ...
@@ -105,9 +104,11 @@ In controllers, a best practice is add this creation in `_before` hook. It will 
  ...
  ```
  
-Then you have `$this->auth` attribute available to use in any _*get*_ or _*post*_ action, where with the `can` method
-you will be able to grant or reject access to a logged user in a resource. For example, if current user has ADMIN role,
-then it will be redirected to admin dashboard (GRANTED), otherwise, will be redirected to login page (REJECTED).
+You will then have a `$this->auth` attribute available to use in any _get_ or _post_ action. This will be used in `can` 
+methods that determine access, allowing you to grant or reject access to a resource.
+
+For example, if current user has ADMIN role, then it will be redirected to admin dashboard (GRANTED), otherwise the user 
+will be redirected to login page (REJECTED).
  
  ```
     php public function getDashboard()
@@ -125,7 +126,7 @@ then it will be redirected to admin dashboard (GRANTED), otherwise, will be redi
 Note that in this example, current user is an instance of `Symfony\Component\Security\Core\Authentication\Token\TokenInterface`,
 stored in `$_SESSION['tokenstorage']`. 
 
-Also, we have "VIEW_ADMIN_DASHBOARD", that is the attribute we will check on current user to grant or reject access.
+Also available is the “VIEW_ADMIN_DASHBOARD” attribute we will use to grant or reject access for the current user.
 
 You can use the same logic to validate Models by adding a `__construct` method where you will place the authorize creation
 
@@ -151,13 +152,19 @@ Same for GRANT/REJECT:
 
 Customization
 -------------
-This package allows you to add custom validation. There are two different ways to do that, you can either create your own
-(or third party) voter classes just implementing `Symfony\Component\Security\Core\Authorization\Voter\VoterInterface` 
+
+This package provides you with a framework to create custom validation. There are two different methods to create custom 
+validation:
+- Custom Voters
+
+Implement `Symfony\Component\Security\Core\Authorization\Voter\VoterInterface` 
 interface, and pass them in an array as second argument of `Authorizer` constructor.
 
-Or, you can create just a `Validator` class that implements `erdiko\authorize ValidatorInterface` interface.
+- Custom Validator
+
+Or you can create a `Validator` class that implements `erdiko\authorize ValidatorInterface` interface.
 Then you will have to register all validators in `/app/config/default/authorize.json`, and voila, all the custom validation 
-logic you've created is already available for authorizer.  
+logic you've created is already available to the authorizer.  
 
 authorize.json
 ```json
@@ -174,7 +181,7 @@ authorize.json
 ```
 
 In these validator classes you will be able to define custom attributes, "VIEW_ADMIN_DASHBOARD" as we mention above,
-we might want to add "IS_PREMIUM_ACCOUNT", or any other you want.
+we might want to add "IS_PREMIUM_ACCOUNT", or any other attributes you want.
 
 Let's implement the example class registered in the example JSON.
 
