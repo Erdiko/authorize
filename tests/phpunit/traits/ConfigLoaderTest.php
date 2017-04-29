@@ -5,7 +5,7 @@
  */
 namespace tests\phpunit\traits;
 
-use erdiko\authenticate\traits\ConfigLoaderTrait;
+use erdiko\authorize\traits\ConfigLoaderTrait;
 
 require_once dirname(dirname(__DIR__)) . '/ErdikoTestCase.php';
 
