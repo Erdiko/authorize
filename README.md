@@ -183,7 +183,10 @@ authorize.json
 In these validator classes you will be able to define custom attributes, "VIEW_ADMIN_DASHBOARD" as we mention above,
 we might want to add "IS_PREMIUM_ACCOUNT", or any other attributes you want.
 
-Let's implement the example class registered in the example JSON.
+Note that `namespace` field of the above JSON indicate the class `namespace` and is related to the app root folder, 
+e.g. `/app/validators/example/ExampleValidator.php`
+
+Let's implement the example class registered in the example JSON.  
 
 ```php
 class ExampleValidator implements ValidatorInterface
