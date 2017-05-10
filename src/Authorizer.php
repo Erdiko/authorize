@@ -7,77 +7,68 @@
  * @author      Leo Daidone, leo@arroyolabs.com
  */
 
-
 namespace erdiko\authorize;
 
-use \AC\Kalinka\Authorizer\RoleAuthorizer;
-use erdiko\authorize\UserInterface;
+use erdiko\authorize\traits\SessionAccessTrait;
+use erdiko\authorize\voters\AdminDashboardVoter;
+use erdiko\authorize\voters\CustomizeVoter;
+use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use \Symfony\Component\Security\Core\Authorization\Voter\RoleVoter;
 
-class Authorizer extends RoleAuthorizer
+class Authorizer
 {
-	private $isGuest = true;
+    use SessionAccessTrait;
 
-	public function __construct(UserInterface $user)
-	{
-		$this->isGuest = ($user->isAnonymous());
+    private $voters = array();
+    private $decisionManager;
+    private $checker;
+    private $tokenStorage;
 
-		if(!$this->isGuest) {
-			// assumed that roles is a string array in User model
-			$roleNames = $user->getRoles();
-			parent::__construct($user, $roleNames);
+    public function __construct(AuthenticationManagerInterface $authenticationManager, $voters=array())
+    {
+        self::startSession();
 
-			$context = getenv('ERDIKO_CONTEXT');
+        $this->voters = array(
+            new RoleVoter('ROLE_'),
+            new AdminDashboardVoter(),
+            new CustomizeVoter()
+        );
 
-			$config = \erdiko\core\Helper::getConfig("authorize",$context);
+        if(!empty($voters)) {
+            foreach ($voters as $voter) {
+                if($voter instanceof VoterInterface) {
+                    array_push($this->voters, $voter);
+                }
+            }
+        }
 
-			$guards = $config["guards"];
-			$policies = $config["policies"];
+        // We store our (authenticated) token inside the token storage
+        $this->tokenStorage = new TokenStorage();
+        if(array_key_exists('tokenstorage',$_SESSION)){
+            $this->tokenStorage->setToken($_SESSION['tokenstorage']->getToken());
+        }
 
-			$register = array();
-			foreach ($guards as $guard) {
-				// attempt to use app guard
-				$class = 'app\\models\\guards\\' . ucfirst(strtolower($guard));
-				if(class_exists($class)){
-					$register[$guard] = new $class;
-				} else{
-					$class = 'erdiko\\authorize\\models\\guards\\' . ucfirst(strtolower($guard));
-					if(class_exists($class)){
-						$register[$guard] = new $class;
-					}
-				}
-			}
+        $this->decisionManager = new AccessDecisionManager($this->voters, AccessDecisionManager::STRATEGY_AFFIRMATIVE, false, true);
+        $this->checker  = new AuthorizationChecker(
+            $this->tokenStorage,
+            $authenticationManager,
+            $this->decisionManager
+        );
+    }
 
-			$this->registerGuards($register);
-
-			$this->registerRolePolicies($policies);
-		}
-	}
-
-	public function can($action, $resType, $guardObject = null)
-	{
-		if($this->isGuest) {
-			if (in_array(strtolower($resType),array('index','login', 'logout'))){
-				$response = in_array($action, array('read', 'login', 'logout'));
-			} else {
-				$response = false;
-			}
-		} else {
-			if(($resType=='logout') && ($action=='read')) {
-				$response = true;
-			} else {
-				try {
-					$response = parent::can( $action, $resType, $guardObject );
-				} catch ( \InvalidArgumentException $e ) {
-					\error_log( $e->getMessage() );
-					$response = false;
-				}
-			}
-		}
-		return $response;
-	}
-
-	public function cannot($action, $resType, $guardObject = null)
-	{
-		return (!$this->can($action, $resType, $guardObject));
-	}
+    public function can($attribute, $resource=null)
+    {
+        try {
+            $granted = $this->checker->isGranted($attribute, $resource);
+        } catch (AuthenticationCredentialsNotFoundException $e) {
+            \error_log($e->getMessage());
+            $granted = false;
+        }
+        return $granted;
+    }
 }

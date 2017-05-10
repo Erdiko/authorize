@@ -1,17 +1,10 @@
 {
-  "guards":[
-    "dashboard",
-    "index"
-  ],
-  "policies": {
-    "anonymous" : {
-      "index":{
-        "read":"allow",
-        "login": "allow"
-      },
-      "dashboard":{
-        "read":"allow"
-      }
-    }
+  "validators":{
+    "custom_types": [{
+      "name": "example",
+      "namespace": "app_validators_example",
+      "classname": "ExampleValidator",
+      "enabled": false
+    }]
   }
 }
