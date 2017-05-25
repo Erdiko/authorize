@@ -33,5 +33,5 @@ interface ValidatorInterface
 	 *
 	 * @return bool
 	 */
-    public function validate($token, $attribute='');
+    public function validate($token, $attribute='', $object=null);
 }
