@@ -56,7 +56,7 @@ class CustomizeVoter implements VoterInterface
             if (!$validator) {
                 continue;
             }
-            $result = $validator->validate($token)
+            $result = $validator->validate($token, $attribute)
                 ? VoterInterface::ACCESS_GRANTED
                 : VoterInterface::ACCESS_ABSTAIN;
         }
