@@ -9,7 +9,7 @@
 namespace erdiko\authorize\tests\factories;
 
 
-use erdiko\authorize\ValidatorInterface;
+use \erdiko\authorize\ValidatorInterface;
 
 class ExampleValidator implements ValidatorInterface
 {
@@ -23,7 +23,7 @@ class ExampleValidator implements ValidatorInterface
         return in_array($attribute, self::supportedAttributes());
     }
 
-    public function validate($token)
+    public function validate($token, $attribute='', $object=null)
     {
         return true;
     }
