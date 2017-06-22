@@ -13,6 +13,7 @@ use erdiko\authorize\traits\SessionAccessTrait;
 use erdiko\authorize\voters\AdminDashboardVoter;
 use erdiko\authorize\voters\CustomizeVoter;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -50,7 +51,10 @@ class Authorizer
         // We store our (authenticated) token inside the token storage
         $this->tokenStorage = new TokenStorage();
         if(array_key_exists('tokenstorage',$_SESSION)){
-            $this->tokenStorage->setToken($_SESSION['tokenstorage']->getToken());
+            $this->tokenStorage->setToken($_SESSION['tokenstorage']);
+        } else {
+	        $token = new UsernamePasswordToken("anonymous","anonymous","main", array());
+	        $this->tokenStorage->setToken($token);
         }
 
         $this->decisionManager = new AccessDecisionManager($this->voters, AccessDecisionManager::STRATEGY_AFFIRMATIVE, false, true);
@@ -66,7 +70,6 @@ class Authorizer
         try {
             $granted = $this->checker->isGranted($attribute, $resource);
         } catch (AuthenticationCredentialsNotFoundException $e) {
-            \error_log($e->getMessage());
             $granted = false;
         }
         return $granted;
