@@ -9,6 +9,7 @@ require_once dirname(dirname(__DIR__)) . '/factories/ExampleValidator.php';
 use erdiko\authorize\tests\factories\AuthenticationManager;
 use erdiko\authorize\voters\CustomizeVoter;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use \tests\ErdikoTestCase;
 
 
@@ -50,13 +51,13 @@ class CustomizeVoterTest extends ErdikoTestCase
     {
         $_tokenA = new UsernamePasswordToken('bar@mail.com', 'asdf1234', 'main', array());
         $tokenA = $this->authManager->authenticate($_tokenA);
-        $this->assertTrue((bool)$this->voter->vote($tokenA, null, array('VIEW_TEST')));
+        $this->assertEquals(VoterInterface::ACCESS_GRANTED,$this->voter->vote($tokenA, null, array('VIEW_TEST')));
     }
 
     public function testVoteReject()
     {
         $_tokenB = new UsernamePasswordToken('foo@mail.com', 'asdf1234', 'main', array());
         $tokenB = $this->authManager->authenticate($_tokenB);
-        $this->assertEquals(-1,$this->voter->vote($tokenB, null, array('VIEW_ADMIN_DASHBOARD')));
+        $this->assertEquals(VoterInterface::ACCESS_ABSTAIN,$this->voter->vote($tokenB, null, array('VIEW_ADMIN_DASHBOARD')));
     }
 }
