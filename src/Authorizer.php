@@ -32,7 +32,10 @@ class Authorizer
 
     public function __construct(AuthenticationManagerInterface $authenticationManager, $voters=array())
     {
-        self::startSession();
+	    $sapi = php_sapi_name();
+	    if(!$this->contains('cli', $sapi)){
+		    self::startSession();
+	    }
 
         $this->voters = array(
             new RoleVoter('ROLE_'),
@@ -51,7 +54,7 @@ class Authorizer
         // We store our (authenticated) token inside the token storage
         $this->tokenStorage = new TokenStorage();
         if(array_key_exists('tokenstorage',$_SESSION)){
-            $this->tokenStorage->setToken($_SESSION['tokenstorage']);
+            $this->tokenStorage->setToken($_SESSION['tokenstorage']->getToken());
         } else {
 	        $token = new UsernamePasswordToken("anonymous","anonymous","main", array());
 	        $this->tokenStorage->setToken($token);
@@ -68,10 +71,20 @@ class Authorizer
     public function can($attribute, $resource=null)
     {
         try {
-            $granted = $this->checker->isGranted($attribute, $resource);
+	        if(array_key_exists('tokenstorage',$_SESSION) && !empty($_SESSION['tokenstorage'])) {
+		        $granted = $this->checker->isGranted( $attribute, $resource );
+	        } else {
+	        	$granted = false;
+	        }
         } catch (AuthenticationCredentialsNotFoundException $e) {
             $granted = false;
         }
+
         return $granted;
     }
+
+	public function contains($needle, $haystack)
+	{
+		return strpos($haystack, $needle) !== false;
+	}
 }
