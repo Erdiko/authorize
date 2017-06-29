@@ -54,7 +54,7 @@ class Authorizer
         // We store our (authenticated) token inside the token storage
         $this->tokenStorage = new TokenStorage();
         if(array_key_exists('tokenstorage',$_SESSION)){
-            $this->tokenStorage->setToken($_SESSION['tokenstorage']->getToken());
+            $this->tokenStorage->setToken($_SESSION['tokenstorage']);
         } else {
 	        $token = new UsernamePasswordToken("anonymous","anonymous","main", array());
 	        $this->tokenStorage->setToken($token);
