@@ -27,7 +27,7 @@ class CustomizeVoter implements VoterInterface
     {
         $config = $this->loadFromJson();
         $this->container = new \Pimple\Container();
-        $validators = $config['validators'];
+        $validators = $config['validators']['custom_types'];
         $this->buildValidators($validators);
     }
 
@@ -44,10 +44,6 @@ class CustomizeVoter implements VoterInterface
 
     public function vote(TokenInterface $token, $subject, array $attributes)
     {
-        $user = $token->getUser();
-        if (!$user instanceof UserInterface) {
-            return VoterInterface::ACCESS_DENIED;
-        }
 
         $result = VoterInterface::ACCESS_ABSTAIN;
 
