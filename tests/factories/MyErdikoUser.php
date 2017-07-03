@@ -15,9 +15,9 @@ use \erdiko\authorize\UserInterface;
 class MyErdikoUser implements UserInterface
 {
 	private $user_id;
-	private $roles = array('anonymous');
-	private $username = "anonymous";
-	private $display_name = "Anonymous";
+	private $roles = array('general');
+	private $username = "general";
+	private $display_name = "General";
 	private $profile;
 
 
@@ -33,11 +33,11 @@ class MyErdikoUser implements UserInterface
 		// TODO: Implement unmarshall() method.
 	}
 
-	public static function getAnonymous()
+	public static function getGeneral()
 	{
 		$_user = new MyErdikoUser();
 		$_user->setUserId(0);
-		$_user->setRoles(array('anonymous'),true);
+		$_user->setRoles(array('general'),true);
 		return $_user;
 	}
 
@@ -58,9 +58,9 @@ class MyErdikoUser implements UserInterface
 			: in_array(strtolower($role),$this->roles);
 	}
 
-	public function isAnonymous()
+	public function isGeneral()
 	{
-		return ($this->username == "anonymous");
+		return ($this->username == "general");
 	}
 	/**
 	 * @return mixed

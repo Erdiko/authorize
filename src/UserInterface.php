@@ -11,6 +11,6 @@ namespace erdiko\authorize;
 interface UserInterface 
 {
 	public function getRoles();
-	public function isAnonymous();
+	public function isGeneral();
 	public function isAdmin();
 }
