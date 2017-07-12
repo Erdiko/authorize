@@ -12,20 +12,19 @@ Compatibility
 -------------
 This package is compatible with PHP 5.4 or above and the latest version of Erdiko.
 
-Requirements
-------------
-This package requires Pimple version 3.0 or above and Symfony-security package version 3.2 or above.
-To ensure all dependencies are installed when you run composer update in your project folder run the following commands:
-
-`composer require pimple/pimple`
-
-`composer require symfony/security`
-
 Installation
 ------------
 Add the eridko/authorize package using composer with this command:
 
 `composer require erdiko/authorize`
+
+##### Requirements
+
+Between its requirements we count on Pimple and Symfony Security.
+In case of Pimple, we choose this package to manage Dependency Injection, allowing us to add more flexibility and 
+extensibility. 
+It also adds compatibility with Symfony Security module.
+
 
 How to Use
 ----------
