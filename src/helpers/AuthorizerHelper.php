@@ -28,7 +28,7 @@ class AuthorizerHelper
     public static function can($action, $object=null, $message=null)
     {
         if (!static::getAuthorizer()->can($action, $object)) {
-            throw new Exception($message ?: self::DEFAULT_MSG , 112);
+            throw new Exception($message ?: self::DEFAULT_MSG);
         }
         return true;
     }
